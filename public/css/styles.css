@@ -1,0 +1,24 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+  
+  header{
+    display: flex;
+    justify-content:space-between;
+    background-image: linear-gradient(to bottom right, #009db2, #7ed957);
+    border-bottom: 5px solid;
+    padding: 10px 20px;
+    font-family: 'Nanum Pen Script';
+}
+
+nav{
+    text-align: right;
+    font-family: 'Nanum Pen Script';
+}       
+img {
+  width: 6    0px;
+  height: 60px;
+  padding: 5px;
+}
