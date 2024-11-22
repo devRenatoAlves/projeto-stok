@@ -1,24 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap');
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Nanum Pen Script', sans-serif ;
 }
-  
-  header{
-    display: flex;
-    justify-content:space-between;
-    background-image: linear-gradient(to bottom right, #009db2, #7ed957);
-    border-bottom: 5px solid;
-    padding: 10px 20px;
-    font-family: 'Nanum Pen Script';
+
+header{
+  display: flex;
+  justify-content:space-between;
+  background-image: linear-gradient(to bottom right, #009db2, #7ed957);
+  border-bottom: 5px solid black;
+  padding: 10px 20px;
+  font-family: 'Nanum Pen Script';
+  margin-bottom: 4em;
 }
 
 nav{
-    text-align: right;
-    font-family: 'Nanum Pen Script';
+  text-align: right;
+  font-family: 'Nanum Pen Script';
 }       
+
+body {
+  background-color: #ebfbee;
+}
+
+.login {
+  padding-top: 50px;
+  font-size: 6em;
+  text-align: center;
+  padding-bottom: 50px;
+} 
+
+form {
+  margin-top: 5em;
+  background-color: #b2f2bb;
+  font-family: 'Nanum Pen Script';
+  text-align: center;
+  margin: 0 auto;
+  width: 600px;
+  height: 700px;
+  padding: 1em;
+  border: 1px solid #ccc;
+  border-radius: 1em;
+}
+
+form div + div {
+  margin-top: 1em;
+  
+}
+
+form label {
+  font-size: 2em;
+  display: block;
+  width: 90px;
+  text-align: right;
+  font-weight: bold;
+}
+
+form input {
+  size: 3em;
+  border-radius: 1em;
+  background-color: #ffec99;
+  height: 3em;
+  width: 300px;
+}
+
+form button {
+  background-color: #40c057;
+  border-radius: 1em;
+  margin-top: 40px;
+  padding: .5em;
+  color: white;
+  font-size: 2em;
+  cursor: pointer;
+  border: none;
+}
+
 img {
-  width: 6    0px;
+  width: 60px;
   height: 60px;
   padding: 5px;
 }
