@@ -63,8 +63,9 @@ form input {
   size: 3em;
   border-radius: 1em;
   background-color: #ffec99;
-  height: 3em;
-  width: 300px;
+  height: 4em;
+  width: 500px;
+  margin-top: 15px;
 }
 
 form button {
@@ -76,6 +77,7 @@ form button {
   font-size: 2em;
   cursor: pointer;
   border: none;
+  margin-bottom: 20px;
 }
 
 img {
