@@ -20,7 +20,7 @@ app.set("view engine", "handlebars");
 
 app.get("/", (req, res) => {
 
-  const user = req.body.user;
+  const username = req.body.username;
   const password = req.body.password;
 
   const sql = `INSERT INTO users  (usersname, password) VALUES (?, ?)`
