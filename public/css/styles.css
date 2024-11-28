@@ -11,7 +11,7 @@ header{
   display: flex;
   justify-content:space-between;
   background-image: linear-gradient(to bottom right, #009db2, #7ed957);
-  border-bottom: 5px solid black;
+  border-bottom: 5px solid #0ba18c;
   padding: 10px 20px;
   font-family: 'Nanum Pen Script';
   margin-bottom: 4em;
@@ -23,7 +23,7 @@ nav{
 }       
 
 body {
-  background-color: #ebfbee;
+  background-color: #5adb94;
 }
 
 .login {
