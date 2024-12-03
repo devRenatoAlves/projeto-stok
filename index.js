@@ -18,7 +18,7 @@ app.set("view engine", "handlebars");
 ///////////////////////////////////////////////////////////////////TELA DE LOGIN
 
 
-app.get("/", (req, res) => {
+app.post("/", (req, res) => {
 
   const username = req.body.username;
   const password = req.body.password;
@@ -30,6 +30,8 @@ app.get("/", (req, res) => {
     if(err) {
       console.log("err")
     };
+
+    res.redirect("/")
   });
 
   res.render("login")
@@ -38,7 +40,7 @@ app.get("/", (req, res) => {
 ///////////////////////////////////////////////////////////////////
 
 
-
+ 
 
 
 /////////////////////////////////////////////////////////////////////DEFININDO PORTA
