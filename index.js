@@ -15,7 +15,7 @@ app.use(express.static("public"));
 app.engine("handlebars", exphbs.engine());
 app.set("view engine", "handlebars");
 
-///////////////////////////////////////////////////////////////////TELA DE LOGIN
+///////////////////////////////////////////////////////////////////TELA DE Registro
 
 app.get("/", (req, res) => {
   res.render("register")
@@ -38,7 +38,14 @@ app.post("/register/insertuser", (req, res) => {
   });
 });
 
-app.get("/estoque", (req, res) => {
+///////////////////////////////////////////////////////////// Tela de Login
+
+app.get("/login", (req, res) => {
+  res.render("login")
+}) 
+
+
+app.get("/login/verifyuser", (req, res) => {
 
   const username = req.body.username;
   const password = req.body.password;
@@ -56,13 +63,15 @@ app.get("/estoque", (req, res) => {
       return res.render("login", {error: "Usuário ou senha incorretos"})
     }
 
-  })
-
+    res.redirect("/estoque")
+  });
 });
 
-///////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////// TELA DE ESTOQUE
 
-
+app.get("/estoque", (req, res) => {
+  res.render("estoque")
+});
  
 
 
