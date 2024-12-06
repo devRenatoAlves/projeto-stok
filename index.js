@@ -18,10 +18,10 @@ app.set("view engine", "handlebars");
 ///////////////////////////////////////////////////////////////////TELA DE LOGIN
 
 app.get("/", (req, res) => {
-  res.render("login")
+  res.render("register")
 }) 
 
-app.post("/login/insertuser", (req, res) => {
+app.post("/register/insertuser", (req, res) => {
 
   const username = req.body.username;
   const password = req.body.password;
@@ -36,6 +36,28 @@ app.post("/login/insertuser", (req, res) => {
 
     res.redirect("/")
   });
+});
+
+app.get("/estoque", (req, res) => {
+
+  const username = req.body.username;
+  const password = req.body.password;
+
+  const sql = `SELECT * FROM login WHERE username = ? AND password = ?`;
+  const data = [username, password];
+
+  pool.query(sql, data, function(err, results) {
+
+    if(err) {
+      console.log(err)
+    };
+
+    if(results.length === false) {
+      return res.render("login", {error: "Usuário ou senha incorretos"})
+    }
+
+  })
+
 });
 
 ///////////////////////////////////////////////////////////////////
