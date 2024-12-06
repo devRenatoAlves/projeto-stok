@@ -17,24 +17,25 @@ app.set("view engine", "handlebars");
 
 ///////////////////////////////////////////////////////////////////TELA DE LOGIN
 
+app.get("/", (req, res) => {
+  res.render("login")
+}) 
 
-app.post("/", (req, res) => {
+app.post("/login/insertuser", (req, res) => {
 
   const username = req.body.username;
   const password = req.body.password;
 
-  const sql = `INSERT INTO users  (usersname, password) VALUES (?, ?)`
+  const sql = `INSERT INTO login (username, password) VALUES (?, ?)`
   const data = [username, password];
 
-  pool.query(sql, data, function (data, err) {
+  pool.query(sql, data, function (err) {
     if(err) {
-      console.log("err")
+      console.log(err)
     };
 
     res.redirect("/")
   });
-
-  res.render("login")
 });
 
 ///////////////////////////////////////////////////////////////////
