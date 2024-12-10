@@ -59,14 +59,14 @@ app.get("/login/verifyuser", (req, res) => {
       console.log(err)
     };
 
-    if(results.length === false) {
+    if(results.length === 0) {
       return res.render("login", {error: "Usuário ou senha incorretos"})
     }
 
     res.redirect("/estoque")
   });
 });
-
+ 
 /////////////////////////////////////////////////////////////////// TELA DE ESTOQUE
 
 app.get("/estoque", (req, res) => {
