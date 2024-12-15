@@ -45,7 +45,7 @@ app.get("/login", (req, res) => {
 }) 
 
 
-app.get("/login/verifyuser", (req, res) => {
+app.post("/login/verifyuser", (req, res) => {
 
   const username = req.body.username;
   const password = req.body.password;
@@ -58,6 +58,8 @@ app.get("/login/verifyuser", (req, res) => {
     if(err) {
       console.log(err)
     };
+
+    console.log("Resultados da query:", results);
 
     if(results.length === 0) {
       return res.render("login", {error: "Usuário ou senha incorretos"})
