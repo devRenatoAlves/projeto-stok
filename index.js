@@ -26,7 +26,7 @@ app.post("/register/insertuser", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
-  const sql = `INSERT INTO login (username, password) VALUES (?, ?)`
+  const sql = `INSERT INTO users (username, password) VALUES (?, ?)`
   const data = [username, password];
 
   pool.query(sql, data, function (err) {
@@ -50,7 +50,7 @@ app.post("/login/verifyuser", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
-  const sql = `SELECT * FROM login WHERE username = ? AND password = ?`;
+  const sql = `SELECT * FROM users WHERE username = ? AND password = ?`;
   const data = [username, password];
 
   pool.query(sql, data, function(err, results) {
