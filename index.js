@@ -1,11 +1,11 @@
-const express = require ("express");
-const exphbs = require ("express-handlebars");
-const pool = require ("./db/conn");
+const express = require("express");
+const exphbs = require("express-handlebars");
+const pool = require("./db/conn");
 const app = express();
 
 app.use(
   express.urlencoded({
-    extended: true
+    extended: true,
   })
 );
 
@@ -18,32 +18,30 @@ app.set("view engine", "handlebars");
 ///////////////////////////////////////////////////////////////////TELA DE Registro
 
 app.get("/", (req, res) => {
-  res.render("register")
-}) 
+  res.render("register");
+});
 
 app.post("/register/insertuser", (req, res) => {
-
   const username = req.body.username;
   const password = req.body.password;
 
-  const sql = `INSERT INTO users (username, password) VALUES (?, ?)`
+  const sql = `INSERT INTO users (username, password) VALUES (?, ?)`;
   const data = [username, password];
 
   pool.query(sql, data, function (err) {
-    if(err) {
-      console.log(err)
-    };
+    if (err) {
+      console.log(err);
+    }
 
-    res.redirect("/")
+    res.redirect("/");
   });
 });
 
 ///////////////////////////////////////////////////////////// Tela de Login
 
 app.get("/login", (req, res) => {
-  res.render("login")
-}) 
-
+  res.render("login");
+});
 
 app.post("/login/verifyuser", (req, res) => {
   const username = req.body.username;
@@ -75,14 +73,12 @@ app.get("/login-error", (req, res) => {
 app.get("/error", (req, res) => {
   res.render("error", { title: "Erro no Servidor" });
 });
- 
+
 /////////////////////////////////////////////////////////////////// TELA DE ESTOQUE
 
 app.get("/estoque", (req, res) => {
-  res.render("estoque")
+  res.render("estoque");
 });
- 
-
 
 /////////////////////////////////////////////////////////////////////DEFININDO PORTA
 app.listen(3000);
