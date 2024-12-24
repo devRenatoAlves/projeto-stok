@@ -46,27 +46,34 @@ app.get("/login", (req, res) => {
 
 
 app.post("/login/verifyuser", (req, res) => {
-
   const username = req.body.username;
   const password = req.body.password;
 
   const sql = `SELECT * FROM users WHERE username = ? AND password = ?`;
   const data = [username, password];
 
-  pool.query(sql, data, function(err, results) {
-
-    if(err) {
-      console.log(err)
-    };
-
-    console.log("Resultados da query:", results);
-
-    if(results.length === 0) {
-      return res.render("login", {error: "Usuário ou senha incorretos"})
+  pool.query(sql, data, function (err, results) {
+    if (err) {
+      console.log(err);
+      return res.redirect("/error"); // Redireciona para uma página de erro genérica
     }
 
-    res.redirect("/estoque")
+    if (results.length === 0) {
+      // Usuário ou senha incorretos
+      return res.redirect("/login-error");
+    }
+
+    // Login bem-sucedido
+    res.redirect("/estoque");
   });
+});
+
+app.get("/login-error", (req, res) => {
+  res.render("login-error", { title: "Erro de Login" });
+});
+
+app.get("/error", (req, res) => {
+  res.render("error", { title: "Erro no Servidor" });
 });
  
 /////////////////////////////////////////////////////////////////// TELA DE ESTOQUE
