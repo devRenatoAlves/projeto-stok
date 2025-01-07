@@ -1,6 +1,6 @@
 const express = require("express");
 const exphbs = require("express-handlebars");
-const pool = require("./db/conn");
+const pool = require("./database/conn");
 const app = express();
 
 app.use(
@@ -65,6 +65,8 @@ app.post("/login/verifyuser", (req, res) => {
     res.redirect("/estoque");
   });
 });
+
+////////////////////////////////////////////////////////////////// Páginas de Erro
 
 app.get("/login-error", (req, res) => {
   res.render("login-error", { title: "Erro de Login" });
