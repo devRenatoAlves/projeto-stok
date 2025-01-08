@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const exphbs = require("express-handlebars");
 const pool = require("./database/conn");
 const app = express();
@@ -11,8 +12,14 @@ app.use(
 
 app.use(express.json());
 
-app.use(express.static("public"));
-app.engine("handlebars", exphbs.engine());
+app.use(express.static(path.join(__dirname, "public")));
+
+app.set("views", path.join(__dirname, "./views/pages"));
+app.engine('handlebars', exphbs.engine({
+  layoutsDir: path.join(__dirname, 'views', 'layouts'),
+  partialsDir: path.join(__dirname,'views', 'partials'), 
+  defaultLayout: 'main',
+}));
 app.set("view engine", "handlebars");
 
 ///////////////////////////////////////////////////////////////////TELA DE Registro
