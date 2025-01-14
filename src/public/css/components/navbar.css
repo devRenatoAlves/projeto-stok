@@ -4,8 +4,21 @@ nav {
   font-family: 'Nanum Pen Script';
 }
 
+header{
+  display: flex;
+  justify-content:space-between;
+  background-image: linear-gradient(to bottom right, #009db2, #7ed957);
+  border-bottom: 5px solid #0ba18c;
+  padding: 10px 20px;
+  font-family: 'Nanum Pen Script';
+  margin-bottom: 4em;
+}
+
 img {
   border-color: black;
+  width: 60px;
+  height: 60px;
+  padding: 5px;
 }
 
 h1 {
