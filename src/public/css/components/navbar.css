@@ -1,0 +1,15 @@
+nav {
+  display: flex ;
+  text-align: right;
+  font-family: 'Nanum Pen Script';
+}
+
+img {
+  border-color: black;
+}
+
+h1 {
+  font-size: 50px;
+  margin-left: 30px;
+  margin-top: 4px;
+}

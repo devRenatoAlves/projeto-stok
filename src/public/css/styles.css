@@ -1,11 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap');
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Nanum Pen Script', sans-serif ;
-}
 
 header{
   display: flex;
@@ -16,11 +10,6 @@ header{
   font-family: 'Nanum Pen Script';
   margin-bottom: 4em;
 }
-
-nav{
-  text-align: right;
-  font-family: 'Nanum Pen Script';
-}       
 
 body {
   background-color: #5adb94;
