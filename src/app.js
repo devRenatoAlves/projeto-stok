@@ -1,19 +1,17 @@
 const express = require("express");
 const path = require("path");
 const exphbs = require("express-handlebars");
-const pool = require("./database/conn");
 const app = express();
+const registerRoutes = require("./routes/register");
+const loginRoutes = require("./routes/login");
+const estoqueRoutes = require("./routes/estoque");
 
-app.use(
-  express.urlencoded({
-    extended: true,
-  })
-);
-
+// Middlewares
+app.use(express.urlencoded({extended: true,}));
 app.use(express.json());
-
 app.use(express.static(path.join(__dirname, "public")));
 
+// Configurações do Handlebars
 app.set("views", path.join(__dirname, "./views/pages"));
 app.engine('handlebars', exphbs.engine({
   layoutsDir: path.join(__dirname, 'views', 'layouts'),
@@ -22,72 +20,17 @@ app.engine('handlebars', exphbs.engine({
 }));
 app.set("view engine", "handlebars");
 
-///////////////////////////////////////////////////////////////////TELA DE Registro
+// Rotas
+app.use("/", registerRoutes);
+app.use("/login", loginRoutes);
+app.use("/estoque", estoqueRoutes);
 
-app.get("/", (req, res) => {
-  res.render("register");
-});
-
-app.post("/register/insertuser", (req, res) => {
-  const username = req.body.username;
-  const password = req.body.password;
-
-  const sql = `INSERT INTO users (username, password) VALUES (?, ?)`;
-  const data = [username, password];
-
-  pool.query(sql, data, function (err) {
-    if (err) {
-      console.log(err);
-    }
-
-    res.redirect("/");
-  });
-});
-
-///////////////////////////////////////////////////////////// Tela de Login
-
-app.get("/login", (req, res) => {
-  res.render("login");
-});
-
-app.post("/login/verifyuser", (req, res) => {
-  const username = req.body.username;
-  const password = req.body.password;
-
-  const sql = `SELECT * FROM users WHERE username = ? AND password = ?`;
-  const data = [username, password];
-
-  pool.query(sql, data, function (err, results) {
-    if (err) {
-      console.log(err);
-      return res.redirect("/error"); // Redireciona para uma página de erro genérica
-    }
-
-    if (results.length === 0) {
-      // Usuário ou senha incorretos
-      return res.redirect("/login-error");
-    }
-
-    // Login bem-sucedido
-    res.redirect("/estoque");
-  });
-});
-
-////////////////////////////////////////////////////////////////// Páginas de Erro
-
-app.get("/login-error", (req, res) => {
-  res.render("login-error", { title: "Erro de Login" });
-});
-
+// Página de erro genérica
 app.get("/error", (req, res) => {
   res.render("error", { title: "Erro no Servidor" });
 });
 
-/////////////////////////////////////////////////////////////////// TELA DE ESTOQUE
-
-app.get("/estoque", (req, res) => {
-  res.render("estoque");
+// Definindo portas
+app.listen(3000, () => {
+  console.log("Servidor rodando na porta 3000");
 });
-
-/////////////////////////////////////////////////////////////////////DEFININDO PORTA
-app.listen(3000);
