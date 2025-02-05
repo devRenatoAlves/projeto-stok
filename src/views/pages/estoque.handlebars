@@ -1,18 +1,29 @@
 <head>
   <link rel="stylesheet" href="/css/components/estoque.css">
+  <link rel="stylesheet" href="/js/estoque.js">
 </head>
 
 <body>
+  
    <form action="/estoque/addMaterial">
+    <h1>Adicional Material</h1>
+
     <label for="nomeMaterial">Nome do material:</label>
-    <input type="text" name="nomeMaterial">
+    <input class="nomeMaterial" type="text" name="nomeMaterial" required>
+
+    <label for="qtdAtual">Quantidade Atual:</label>
+    <input class="qtdAtual" type="text" name="qtdAtual" required>
 
     <label for="qtdMin">Quantidade Minima:</label>
-    <input type="number" name="qtdMin">
+    <input class="qtdMinima" type="number" name="qtdMin" required>
 
     <label for="qtdMax">Quantidade Máxima:</label>
-    <input type="number" name="qtdMax">
+    <input class="qtdMaxima" type="number" name="qtdMax" required>
+
+    <button id="btnAdd">Adicionar Tarefa</button>
    </form>
+
+  <ul id="produto-estoque"></ul>
 
 <body>
   
