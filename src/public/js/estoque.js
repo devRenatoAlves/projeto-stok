@@ -88,5 +88,6 @@ function adicionaTarefasSalvas() {
     }
 }
 
+
 // Chama a função para carregar os dados do LocalStorage
 adicionaTarefasSalvas();
