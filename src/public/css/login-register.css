@@ -1,18 +1,18 @@
 .login {
-  padding-top: 50px;
-  font-size: 6em;
+  padding-top: 25px;
+  font-size: 5em;
   text-align: center;
-  padding-bottom: 50px;
+  margin-left: auto;
+  padding-bottom: 25px;
 } 
 
 form {
   margin-top: 5em;
   background-color: #b2f2bb;
-  font-family: 'Nanum Pen Script';
   text-align: center;
   margin: 0 auto;
-  width: 600px;
-  height: 700px;
+  width: 400px;
+  height: 450px;
   padding: 1em;
   border: 3px solid #ccc;
   border-radius: 1em;
@@ -24,21 +24,22 @@ form div + div {
 }
 
 form label {
-  font-size: 2em;
-  display: block;
-  width: 90px;
+  font-size: 1.5em;
+  display: inline;
+  width: 80px;
   text-align: right;
-  font-weight: bold;
 }
 
 form input {
+  text-align: center;
+  display: block;
   font-size: 20px;
   size: 3em;
   border-radius: 1em;
   background-color: #ffec99;
-  height: 4em;
-  width: 500px;
-  margin-top: 15px;
+  height: 40px;
+  width: 400px;
+  margin-top: 5px;
 }
 
 form button {
@@ -53,8 +54,19 @@ form button {
   margin-bottom: 20px;
 }
 
-
+.button {
+  background-color: #40c057;
+  border-radius: 1em;
+  margin-top: 10px;
+  padding: .5em;
+  color: white;
+  font-size: 1em;
+  cursor: pointer;
+  border: none;
+  margin-bottom: 15px;
+  width: 350px;
+}
 
 a {
-  font-size: 1.5em;
+  font-size: 1em;
 }
