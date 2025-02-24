@@ -7,18 +7,21 @@ router.get("/", (req, res) => {
 });
 
 router.post("/insertuser", (req, res) => {
-  const username = req.body.username;
-  const password = req.body.password;
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).send("Usuário e senha são obrigatórios.");
+  }
 
   const sql = `INSERT INTO users (username, password) VALUES (?, ?)`;
   const data = [username, password];
 
   pool.query(sql, data, (err) => {
     if (err) {
-      console.log(err);
-      return res.redirect("/error");
+      console.error(err);
+      return res.status(500).send("Erro ao cadastrar usuário.");
     }
-    res.redirect("/");
+    res.redirect("/login");
   });
 });
 

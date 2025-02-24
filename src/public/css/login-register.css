@@ -42,28 +42,18 @@ form input {
   margin-top: 5px;
 }
 
-form button {
-  background-color: #40c057;
-  border-radius: 1em;
-  margin-top: 40px;
-  padding: .5em;
-  color: white;
-  font-size: 2em;
-  cursor: pointer;
-  border: none;
-  margin-bottom: 20px;
-}
 
 .button {
+  margin-left: 20px;
   background-color: #40c057;
   border-radius: 1em;
-  margin-top: 10px;
+  margin-top: 20px;
   padding: .5em;
   color: white;
   font-size: 1em;
   cursor: pointer;
   border: none;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
   width: 350px;
 }
 
