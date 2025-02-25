@@ -21,7 +21,10 @@ btnAdd?.addEventListener("click", function () {
         return;
     }
 
-    const texto = `Material: ${nomeMaterial.value} | Atual: ${qtdAtual.value} | Mín: ${qtdMinima.value} | Máx: ${qtdMaxima.value}`;
+    const texto = `Nome do Material:${nomeMaterial.value} <br>
+      Quantidade Atual: ${qtdAtual.value} <br>
+      Quantidade Mín: ${qtdMinima.value} <br>  
+      Quantidade Máx: ${qtdMaxima.value}<br>`;
     
     criaMaterial(texto);
 });
