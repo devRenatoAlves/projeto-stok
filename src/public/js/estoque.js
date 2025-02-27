@@ -4,93 +4,162 @@ const qtdMinima = document.querySelector(".qtdMinima");
 const qtdMaxima = document.querySelector(".qtdMaxima");
 const btnAdd = document.querySelector(".btnAdd");
 const lista = document.querySelector(".produto-estoque");
+const inputImagem = document.getElementById("inputImagem");
 
-// Limpa os inputs
-function limpaInputs() {
-    document.querySelectorAll("input").forEach(input => {
-        input.value = ""; // Limpa os campos
-    });
+let db;
 
-    document.querySelector("input")?.focus(); // Foca no primeiro input
+// 🔄 Abre o IndexedDB
+function abrirBanco(callback) {
+    if (db) return callback(db);
+
+    const request = indexedDB.open("MeuBanco", 1);
+
+    request.onupgradeneeded = function (event) {
+        let db = event.target.result;
+        if (!db.objectStoreNames.contains("imagens")) {
+            db.createObjectStore("imagens", { keyPath: "id", autoIncrement: true });
+        }
+    };
+
+    request.onsuccess = function (event) {
+        db = event.target.result;
+        callback(db);
+    };
+
+    request.onerror = function () {
+        console.error("Erro ao abrir o IndexedDB");
+    };
 }
 
-// Adiciona evento ao botão de adicionar
-btnAdd?.addEventListener("click", function () {
-    if (!nomeMaterial.value) {
-        alert("Por favor, preencha o nome do material!");
+// 🔄 Limpa os inputs após adicionar um material
+function limpaInputs() {
+    document.querySelectorAll("input").forEach(input => {
+        input.value = "";
+    });
+
+    document.querySelector("input")?.focus();
+}
+
+// ➕ Adiciona evento ao botão
+btnAdd?.addEventListener("click", function (event) {
+    event.preventDefault();
+
+    if (!nomeMaterial.value || !qtdAtual.value || !qtdMinima.value || !qtdMaxima.value || !inputImagem.files[0]) {
+        alert("Preencha todos os campos e selecione uma imagem!");
         return;
     }
 
-    const texto = `Nome do Material:${nomeMaterial.value} <br>
-      Quantidade Atual: ${qtdAtual.value} <br>
-      Quantidade Mín: ${qtdMinima.value} <br>  
-      Quantidade Máx: ${qtdMaxima.value}<br>`;
-    
-    criaMaterial(texto);
+    let file = inputImagem.files[0];
+    let reader = new FileReader();
+    reader.readAsArrayBuffer(file);
+
+    reader.onload = function () {
+        abrirBanco(function (db) {
+            let transaction = db.transaction("imagens", "readwrite");
+            let store = transaction.objectStore("imagens");
+
+            let imagem = {
+                nome: file.name,
+                tipo: file.type,
+                dados: reader.result,
+            };
+
+            let addRequest = store.add(imagem);
+            addRequest.onsuccess = function (event) {
+                let imagemId = event.target.result;
+                criarMaterial(imagemId);
+            };
+
+            addRequest.onerror = function () {
+                console.error("Erro ao salvar imagem");
+            };
+        });
+    };
 });
 
-// Cria um item <li>
-function criaLi() {
-    const li = document.createElement('li');
-    return li;
+// ➕ Cria o item da lista com imagem e informações
+function criarMaterial(imagemId) {
+    abrirBanco(function (db) {
+        let transaction = db.transaction("imagens", "readonly");
+        let store = transaction.objectStore("imagens");
+        let getRequest = store.get(imagemId);
+
+        getRequest.onsuccess = function () {
+            let imgData = getRequest.result;
+            let blob = new Blob([imgData.dados], { type: imgData.tipo });
+            let url = URL.createObjectURL(blob);
+
+            let li = document.createElement("li");
+            li.classList.add("produto-item");
+
+            let imgElement = document.createElement("img");
+            imgElement.src = url;
+            imgElement.style.width = "100px";
+            imgElement.style.marginRight = "10px";
+
+            let info = document.createElement("div");
+            info.innerHTML = `
+                <p><strong>Nome do Material:</strong> ${nomeMaterial.value}</p>
+                <p><strong>Quantidade Atual:</strong> ${qtdAtual.value}</p>
+                <p><strong>Quantidade Mínima:</strong> ${qtdMinima.value}</p>
+                <p><strong>Quantidade Máxima:</strong> ${qtdMaxima.value}</p>
+            `;
+
+            let botaoApagar = document.createElement("button");
+            botaoApagar.setAttribute("class", "apagar");
+            botaoApagar.innerText = "Apagar";
+            botaoApagar.onclick = function () {
+                li.remove();
+                salvarMateriais();
+            };
+
+            li.appendChild(imgElement);
+            li.appendChild(info);
+            li.appendChild(botaoApagar);
+            lista.appendChild(li);
+
+            salvarMateriais();
+            limpaInputs();
+
+            imgElement.onload = () => URL.revokeObjectURL(url);
+        };
+
+        getRequest.onerror = function () {
+            console.error("Erro ao carregar imagem");
+        };
+    });
 }
 
-// Remove um item ao clicar no botão "Apagar"
-document.addEventListener("click", function (e) {
-    const el = e.target;
+// 💾 Salva os materiais no LocalStorage
+function salvarMateriais() {
+    const itens = [];
+    document.querySelectorAll(".produto-item").forEach(li => {
+        itens.push(li.innerHTML);
+    });
 
-    if (el.classList.contains("apagar")) {
-        el.parentElement.remove();
-        salvarTarefas();
+    localStorage.setItem("materiais", JSON.stringify(itens));
+}
+
+// 📂 Recupera os materiais do LocalStorage ao carregar a página
+function carregarMateriais() {
+    const materiais = JSON.parse(localStorage.getItem("materiais"));
+
+    if (materiais) {
+        materiais.forEach(material => {
+            let li = document.createElement("li");
+            li.classList.add("produto-item");
+            li.innerHTML = material;
+
+            // Adiciona evento ao botão de apagar
+            li.querySelector(".apagar")?.addEventListener("click", function () {
+                li.remove();
+                salvarMateriais();
+            });
+
+            lista.appendChild(li);
+        });
     }
-});
-
-// Cria o item da lista com o texto e botão apagar
-function criaMaterial(textoInput) {
-    const li = criaLi();
-    li.innerHTML = textoInput;
-    lista.appendChild(li);
-    
-    criaBotaoApagar(li);
-    salvarTarefas();
-    limpaInputs();
 }
 
-// Cria o botão "Apagar" dentro do <li>
-function criaBotaoApagar(li) {
-    const botaoApagar = document.createElement("button");
-    botaoApagar.setAttribute("class", "apagar");
-    botaoApagar.innerText = "Apagar";
-    li.appendChild(botaoApagar);
-}
-
-// Salva a lista de materiais no LocalStorage
-function salvarTarefas() {
-    const liTarefas = lista.querySelectorAll("li");
-    const listaDeTarefas = [];
-
-    for (let tarefa of liTarefas) {
-        let tarefaTexto = tarefa.innerText.replace("Apagar", "").trim();
-        listaDeTarefas.push(tarefaTexto);
-    }
-
-    const tarefasJSON = JSON.stringify(listaDeTarefas);
-    localStorage.setItem("tarefas", tarefasJSON);
-}
-
-// Recupera as tarefas salvas ao carregar a página
-function adicionaTarefasSalvas() {
-    const tarefas = localStorage.getItem("tarefas");
-
-    if (tarefas) {
-        const listaDeTarefas = JSON.parse(tarefas);
-
-        for (let tarefa of listaDeTarefas) {
-            criaMaterial(tarefa);
-        }
-    }
-}
-
-
-// Chama a função para carregar os dados do LocalStorage
-adicionaTarefasSalvas();
+// 🏁 Inicialização
+document.addEventListener("DOMContentLoaded", carregarMateriais);
