@@ -8,7 +8,7 @@ const inputImagem = document.getElementById("inputImagem");
 
 let db;
 
-// 🔄 Abre o IndexedDB
+// Abre o IndexedDB
 function abrirBanco(callback) {
     if (db) return callback(db);
 
@@ -31,7 +31,7 @@ function abrirBanco(callback) {
     };
 }
 
-// 🔄 Limpa os inputs após adicionar um material
+// impa os inputs após adicionar um material
 function limpaInputs() {
     document.querySelectorAll("input").forEach(input => {
         input.value = "";
@@ -40,7 +40,7 @@ function limpaInputs() {
     document.querySelector("input")?.focus();
 }
 
-// ➕ Adiciona evento ao botão
+// Adiciona evento ao botão
 btnAdd?.addEventListener("click", function (event) {
     event.preventDefault();
 
@@ -77,7 +77,7 @@ btnAdd?.addEventListener("click", function (event) {
     };
 });
 
-// ➕ Cria o item da lista com imagem e informações
+//  Cria o item da lista com imagem e informações
 function criarMaterial(imagemId) {
     abrirBanco(function (db) {
         let transaction = db.transaction("imagens", "readonly");
@@ -130,7 +130,7 @@ function criarMaterial(imagemId) {
     });
 }
 
-// 💾 Salva os materiais no LocalStorage
+//  Salva os materiais no LocalStorage
 function salvarMateriais() {
     const itens = [];
     document.querySelectorAll(".produto-item").forEach(li => {
@@ -140,7 +140,7 @@ function salvarMateriais() {
     localStorage.setItem("materiais", JSON.stringify(itens));
 }
 
-// 📂 Recupera os materiais do LocalStorage ao carregar a página
+// Recupera os materiais do LocalStorage ao carregar a página
 function carregarMateriais() {
     const materiais = JSON.parse(localStorage.getItem("materiais"));
 
@@ -161,5 +161,5 @@ function carregarMateriais() {
     }
 }
 
-// 🏁 Inicialização
+// Inicialização
 document.addEventListener("DOMContentLoaded", carregarMateriais);

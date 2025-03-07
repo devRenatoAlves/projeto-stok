@@ -7,8 +7,8 @@ nav {
 header{
   display: flex;
   justify-content:space-between;
-  background-image: linear-gradient(to bottom right, #009db2, #7ed957);
-  border-bottom: 3px solid #0ba18c;
+  background-color: #b2f2bb;
+  border-bottom: 3px solid #000000;
   padding: 10px 10px;
   margin-bottom: 4em;
   height: 30px;
