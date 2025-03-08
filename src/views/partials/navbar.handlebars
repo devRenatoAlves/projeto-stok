@@ -1,10 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-  <link rel="stylesheet" href="/css/components/navbar.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar</title>
+    <link rel="stylesheet" href="/css/components/navbar.css">
 </head>
+<body>
+    <nav class="navbar">
+        <a href="#" class="logo"><img src="/imgs/STOKS.png" alt=""></a>
+        <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+        <div class="menu" id="menu">
+            <a href="#">Home</a>
+            <a href="#">Sobre</a>
+            <a href="#">Contato</a>
+        </div>
+    </nav>
+    <script>
+        function toggleMenu() {
+            var menu = document.getElementById("menu");
+            if (menu.style.display === "flex") {
+                menu.style.display = "none";
+            } else {
+                menu.style.display = "flex";
+            }
+        }
+    </script>
+</body>
+</html>
 
-<nav>
-  <a href="#" class="navbar-left">
-      <img src="imgs/STOKS.png" alt="STOKS logo" class="img-responsive">
-  </a>
-      <h1>STOKS</h1>
 </nav>
