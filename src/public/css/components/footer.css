@@ -1,28 +1,12 @@
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.content {
-  flex: 1;
-}
-
-
+/* Estilo do footer */
 .footer {
-  border: 3px solid #000000;
-  height: 80px;
-  background-color: #b2f2bb;
-  color: rgb(0, 0, 0);
+  background-color: #d8f3dc;
   padding: 40px 20px;
+  color: #1b4332;
   font-family: Arial, sans-serif;
+  border: 3px solid #2d6a4f;
   margin-top: 80px;
+  border-radius: 10px;
 }
 
 .footer-container {
@@ -40,20 +24,37 @@ html, body {
   text-align: center;
 }
 
-body::after {
-  content: "";
-  display: block;
-  height: 0;
-  clear: both;
+.footer h3 {
+  font-size: 1.5em;
+  margin-bottom: 15px;
+  color: #2d6a4f;
+}
+
+.footer p {
+  font-size: 1.1em;
+  color: #2d6a4f;
 }
 
 .footer-logo {
-  width: 30px; 
+  width: 35px;
   height: auto;
-  margin: 5px;
-  transition: transform 0.3s ease;
+  margin: 10px;
+  transition: transform 0.3s ease, filter 0.3s ease;
 }
 
 .footer-logo:hover {
   transform: scale(1.1);
+  filter: brightness(0.8);
+}
+
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-section {
+    text-align: center;
+    margin-bottom: 20px;
+  }
 }
