@@ -1,32 +1,34 @@
+/* Estilo da navbar */
 .navbar {
-  background: #b2f2bb;
-  padding: 8px 15px;
+  background-color: #d8f3dc;
+  padding: 12px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: white;
+  color: #1b4332;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border: 3px solid black; 
+  border: 3px solid #2d6a4f;
   margin-bottom: 60px;
+  border-radius: 10px;
 }
 
 .navbar .logo img {
-  height: 35px; 
+  height: 40px;
   width: auto;
   filter: brightness(0);
 }
 
 .navbar a {
-  color: rgb(0, 0, 0);
+  color: #2d6a4f;
   text-decoration: none;
-  margin: 0 10px;
-  font-size: 14px;
-  font-weight: 500;
+  margin: 0 15px;
+  font-size: 16px;
+  font-weight: bold;
   transition: color 0.3s ease;
 }
 
 .navbar a:hover {
-  color: #ffcc00;
+  color: #1b4332;
 }
 
 .menu {
@@ -37,29 +39,39 @@
   display: none;
   font-size: 1.5rem;
   cursor: pointer;
+  color: #2d6a4f;
 }
 
 @media (max-width: 768px) {
   .menu {
-      display: none;
-      flex-direction: column;
-      background: #b2f2bb;
-      position: absolute;
-      top: 50px;
-      left: 0;
-      width: 100%;
-      text-align: center;
-      padding: 5px 0;
-      border-top: 2px solid rgb(0, 0, 0);
+    display: none;
+    flex-direction: column;
+    background-color: #d8f3dc;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    border-top: 3px solid #2d6a4f;
+    border-radius: 10px;
   }
 
   .menu a {
-      padding: 8px;
-      display: block;
-      font-size: 14px;
+    padding: 12px;
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    color: #2d6a4f;
+    transition: background-color 0.3s ease;
+  }
+
+  .menu a:hover {
+    background-color: #2d6a4f;
+    color: white;
   }
 
   .menu-toggle {
-      display: block;
+    display: block;
   }
 }

@@ -161,5 +161,32 @@ function carregarMateriais() {
     }
 }
 
+const uploadArea = document.getElementById('uploadArea');
+
+
+uploadArea.addEventListener('click', function() {
+    inputImagem.click();
+});
+
+uploadArea.addEventListener('dragover', function(event) {
+    event.preventDefault();
+    this.classList.add('dragging');
+});
+
+uploadArea.addEventListener('dragleave', function() {
+    this.classList.remove('dragging');
+});
+
+uploadArea.addEventListener('drop', function(event) {
+    event.preventDefault();
+    this.classList.remove('dragging');
+    let file = event.dataTransfer.files[0];
+
+    if (file) {
+        console.log('Imagem carregada:', file.name);
+    }
+});
+
+
 // Inicialização
 document.addEventListener("DOMContentLoaded", carregarMateriais);

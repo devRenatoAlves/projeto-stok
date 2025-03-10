@@ -20,12 +20,15 @@
     <label for="qtdMax">Quantidade Maxima:</label>
     <input class="qtdMaxima" type="number" name="qtdMax" required>
 
-    <input type="file" id="inputImagem">
+    <!-- Campo de upload -->
+    <div class="upload-area" id="uploadArea">
+        <img src="/images/upload-icon.png" alt="Upload" class="upload-icon">
+        <p>Clique ou arraste uma imagem</p>
+        <input type="file" id="inputImagem" accept="image/*" hidden>
+    </div>
 
-    <button class="btnAdd">Adicionar Tarefa</button>
+    <button class="btnAdd">Adicionar Material</button>
    </form>
 
-  <ul class="produto-estoque"><div id="galeria"></div></ul>
-
-<body>
-  
+   <ul class="produto-estoque"><div id="galeria"></div></ul>
+</body>

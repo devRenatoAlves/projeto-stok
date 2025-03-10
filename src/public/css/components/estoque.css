@@ -1,28 +1,32 @@
+/* Estilo do formulário */
 form {
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
-  border: 3px solid #ccc;
+  border: 3px solid #2d6a4f;
   border-radius: 10px;
-  background-color: #b2f2bb;
+  background-color: #d8f3dc;
 }
 
 form h1 {
   text-align: center;
   margin-bottom: 20px;
+  color: #1b4332;
 }
 
 form label {
-  font-size: 1.5em;
+  font-size: 1.3em;
   display: block;
   margin-bottom: 10px;
-  font-weight: bold;  
+  font-weight: bold;
+  color: #2d6a4f;
 }
+
 form input {
   font-size: 1em;
   display: block;
   margin-bottom: 10px;
-  font-weight: bold;  
+  font-weight: bold;
 }
 
 form input[type="text"],
@@ -33,59 +37,99 @@ form select,
 form textarea {
   width: 100%;
   padding: 10px;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
+  margin-bottom: 15px;
+  border: 2px solid #40916c;
   border-radius: 5px;
   box-sizing: border-box;
+  background-color: #ffffff;
 }
 
 form input[type="submit"],
 form input[type="reset"],
 form button {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   border: none;
   border-radius: 5px;
-  background-color: #4CAF50;
+  background-color: #2d6a4f;
   color: white;
   font-size: 16px;
   cursor: pointer;
+  transition: background 0.3s ease-in-out;
 }
 
 form input[type="submit"]:hover,
 form input[type="reset"]:hover,
 form button:hover {
-  background-color: #45a049;
+  background-color: #1b4332;
 }
 
-form .form-group {
-  margin-bottom: 15px;
-}
-
-form .form-group:last-child {
-  margin-bottom: 0;
-}
-
+/* Estilização da lista */
 li {
   padding: 20px;
   margin: 0 auto;
-  background-color: #b2f2bb;
-  display: block; 
+  background-color: #d8f3dc;
+  display: block;
   border-radius: 10px;
   margin-top: 30px;
   max-width: 600px;
-  border: 3px solid #ccc;
+  border: 3px solid #2d6a4f;
 }
 
 li button {
   margin-left: 230px;
-  width: 10%;
+  width: 20%;
   padding: 10px;
   border: none;
   border-radius: 5px;
-  background-color: #4CAF50;
+  background-color: #2d6a4f;
   color: white;
   font-size: 13px;
   cursor: pointer;
+  transition: background 0.3s ease-in-out;
 }
 
+li button:hover {
+  background-color: #1b4332;
+}
+
+/* Estilo do campo de upload */
+.upload-area {
+  width: 100%;
+  max-width: 320px;
+  padding: 25px;
+  text-align: center;
+  border: 3px dashed #2d6a4f;
+  border-radius: 12px;
+  cursor: pointer;
+  background-color: #ffffff;
+  transition: background 0.3s ease, border 0.3s ease;
+  margin: 15px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-area p {
+  color: #2d6a4f;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.upload-area .upload-icon {
+  width: 50px;
+  height: 50px;
+  opacity: 0.8;
+}
+
+.upload-area:hover {
+  background-color: #d8f3dc;
+  border-color: #1b4332;
+}
+
+.upload-area.dragging {
+  background-color: #b7e4c7;
+  border-color: #1b4332;
+}
