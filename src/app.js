@@ -30,6 +30,11 @@ app.get("/error", (req, res) => {
   res.render("error", { title: "Erro no Servidor" });
 });
 
+app.get("/login-error", (req, res) => {
+  res.render("login-error", { title: "Erro de Login" });
+});
+
+
 // Definindo portas
 app.listen(3000, () => {
   console.log("Servidor rodando na porta 3000");

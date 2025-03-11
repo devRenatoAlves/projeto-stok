@@ -16,11 +16,13 @@ router.post("/insertuser", (req, res) => {
   const sql = `INSERT INTO users (username, password) VALUES (?, ?)`;
   const data = [username, password];
 
-  pool.query(sql, data, (err) => {
+  pool.query(sql, data, (err, results) => {
     if (err) {
       console.error(err);
       return res.status(500).send("Erro ao cadastrar usuário.");
+  
     }
+
     res.redirect("/login");
   });
 });
