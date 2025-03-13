@@ -2,6 +2,15 @@ const express = require("express");
 const pool = require("../database/conn.js");
 const router = express.Router();
 
+pool.getConnection((err, connection) => {
+  if (err) {
+    console.error("Erro ao conectar ao banco de dados:", err);
+  } else {
+    console.log("Conectado ao banco de dados.");
+    connection.release();
+  }
+}); 
+
 router.get("/", (req, res) => {
   res.render("register");
 });
@@ -9,6 +18,7 @@ router.get("/", (req, res) => {
 router.post("/insertuser", (req, res) => {
   const { username, password } = req.body;
 
+  console.log("Dados recebidos:", req.body); // Debug
   if (!username || !password) {
     return res.status(400).send("Usuário e senha são obrigatórios.");
   }
