@@ -133,3 +133,12 @@ li button:hover {
   background-color: #b7e4c7;
   border-color: #1b4332;
 }
+
+img {
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  display: inline-block;
+  border-radius: 10px;
+  margin-top: 20px;
+}
