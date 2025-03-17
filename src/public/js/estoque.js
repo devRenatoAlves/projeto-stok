@@ -31,7 +31,7 @@ function abrirBanco(callback) {
     };
 }
 
-// impa os inputs após adicionar um material
+// Limpa os inputs após adicionar um material
 function limpaInputs() {
     document.querySelectorAll("input").forEach(input => {
         input.value = "";
@@ -62,6 +62,7 @@ btnAdd?.addEventListener("click", function (event) {
                 nome: file.name,
                 tipo: file.type,
                 dados: reader.result,
+                status: 'ativo' // Adicionando status ativo
             };
 
             let addRequest = store.add(imagem);
@@ -77,7 +78,7 @@ btnAdd?.addEventListener("click", function (event) {
     };
 });
 
-//  Cria o item da lista com imagem e informações
+// Cria o item da lista com imagem e informações
 function criarMaterial(imagemId) {
     abrirBanco(function (db) {
         let transaction = db.transaction("imagens", "readonly");
@@ -109,17 +110,14 @@ function criarMaterial(imagemId) {
             botaoApagar.setAttribute("class", "apagar");
             botaoApagar.innerText = "Apagar";
             botaoApagar.onclick = function () {
+                apagarMaterial(imagemId); // Marca como apagado no banco
                 li.remove();
-                salvarMateriais();
             };
 
             li.appendChild(imgElement);
             li.appendChild(info);
             li.appendChild(botaoApagar);
             lista.appendChild(li);
-
-            salvarMateriais();
-            limpaInputs();
 
             imgElement.onload = () => URL.revokeObjectURL(url);
         };
@@ -130,39 +128,84 @@ function criarMaterial(imagemId) {
     });
 }
 
-//  Salva os materiais no LocalStorage
-function salvarMateriais() {
-    const itens = [];
-    document.querySelectorAll(".produto-item").forEach(li => {
-        itens.push(li.innerHTML);
-    });
+// Marca um material como apagado no banco de dados
+function apagarMaterial(imagemId) {
+    abrirBanco(function (db) {
+        let transaction = db.transaction("imagens", "readwrite");
+        let store = transaction.objectStore("imagens");
+        let getRequest = store.get(imagemId);
 
-    localStorage.setItem("materiais", JSON.stringify(itens));
+        getRequest.onsuccess = function () {
+            let imgData = getRequest.result;
+            imgData.status = "apagado"; // Marca como apagado
+
+            let updateRequest = store.put(imgData);
+            updateRequest.onerror = function () {
+                console.error("Erro ao atualizar o status do material");
+            };
+        };
+
+        getRequest.onerror = function () {
+            console.error("Erro ao recuperar material para apagar");
+        };
+    });
 }
 
-// Recupera os materiais do LocalStorage ao carregar a página
+// Recupera os materiais do IndexedDB ao carregar a página
 function carregarMateriais() {
-    const materiais = JSON.parse(localStorage.getItem("materiais"));
+    abrirBanco(function (db) {
+        let transaction = db.transaction("imagens", "readonly");
+        let store = transaction.objectStore("imagens");
+        let getRequest = store.getAll();
 
-    if (materiais) {
-        materiais.forEach(material => {
-            let li = document.createElement("li");
-            li.classList.add("produto-item");
-            li.innerHTML = material;
+        getRequest.onsuccess = function () {
+            let imagens = getRequest.result;
+            imagens.forEach(imagem => {
+                // Só adiciona os materiais com status "ativo"
+                if (imagem.status === "ativo") {
+                    let li = document.createElement("li");
+                    li.classList.add("produto-item");
 
-            // Adiciona evento ao botão de apagar
-            li.querySelector(".apagar")?.addEventListener("click", function () {
-                li.remove();
-                salvarMateriais();
+                    let imgData = imagem;
+                    let blob = new Blob([imgData.dados], { type: imgData.tipo });
+                    let url = URL.createObjectURL(blob);
+
+                    let imgElement = document.createElement("img");
+                    imgElement.src = url;
+                    imgElement.style.width = "100px";
+                    imgElement.style.marginRight = "10px";
+
+                    let info = document.createElement("div");
+                    info.innerHTML = `
+                        <p><strong>Nome do Material:</strong> ${imagem.nome}</p>
+                        <p><strong>Quantidade Atual:</strong> ${qtdAtual.value}</p>
+                        <p><strong>Quantidade Mínima:</strong> ${qtdMinima.value}</p>
+                        <p><strong>Quantidade Máxima:</strong> ${qtdMaxima.value}</p>
+                    `;
+
+                    let botaoApagar = document.createElement("button");
+                    botaoApagar.setAttribute("class", "apagar");
+                    botaoApagar.innerText = "Apagar";
+                    botaoApagar.onclick = function () {
+                        apagarMaterial(imagem.id); // Marca como apagado no banco
+                        li.remove();
+                    };
+
+                    li.appendChild(imgElement);
+                    li.appendChild(info);
+                    li.appendChild(botaoApagar);
+                    lista.appendChild(li);
+                }
             });
+        };
 
-            lista.appendChild(li);
-        });
-    }
+        getRequest.onerror = function () {
+            console.error("Erro ao carregar imagens");
+        };
+    });
 }
 
 const uploadArea = document.getElementById('uploadArea');
-
 
 uploadArea.addEventListener('click', function() {
     inputImagem.click();
@@ -186,7 +229,6 @@ uploadArea.addEventListener('drop', function(event) {
         console.log('Imagem carregada:', file.name);
     }
 });
-
 
 // Inicialização
 document.addEventListener("DOMContentLoaded", carregarMateriais);
