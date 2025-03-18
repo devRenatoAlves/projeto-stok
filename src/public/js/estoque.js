@@ -8,41 +8,46 @@ const inputImagem = document.getElementById("inputImagem");
 
 let db;
 
-// Abre o IndexedDB
 function abrirBanco(callback) {
-    if (db) return callback(db);
+  if (db) return callback(db);
 
-    const request = indexedDB.open("MeuBanco", 1);
+  const request = indexedDB.open("MeuBanco", 2); // 🔹 Atualizando a versão do banco!
 
-    request.onupgradeneeded = function (event) {
-        let db = event.target.result;
-        if (!db.objectStoreNames.contains("imagens")) {
-            db.createObjectStore("imagens", { keyPath: "id", autoIncrement: true });
-        }
-    };
+  request.onupgradeneeded = function (event) {
+      let db = event.target.result;
 
-    request.onsuccess = function (event) {
-        db = event.target.result;
-        callback(db);
-    };
+      if (!db.objectStoreNames.contains("materiais")) {
+          console.log("Criando objectStore 'materiais'...");
+          db.createObjectStore("materiais", { keyPath: "id", autoIncrement: true });
+      }
+  };
 
-    request.onerror = function () {
-        console.error("Erro ao abrir o IndexedDB");
-    };
+  request.onsuccess = function (event) {
+      db = event.target.result;
+      console.log("Banco de dados aberto com sucesso!");
+      callback(db);
+  };
+
+  request.onerror = function () {
+      console.error("Erro ao abrir o IndexedDB");
+  };
 }
+
 
 // Limpa os inputs após adicionar um material
 function limpaInputs() {
-    document.querySelectorAll("input").forEach(input => {
-        input.value = "";
-    });
-
-    document.querySelector("input")?.focus();
+    nomeMaterial.value = "";
+    qtdAtual.value = "";
+    qtdMinima.value = "";
+    qtdMaxima.value = "";
+    inputImagem.value = ""; // Reseta o input de imagem
+    nomeMaterial.focus();
 }
 
 // Adiciona evento ao botão
 btnAdd?.addEventListener("click", function (event) {
     event.preventDefault();
+    console.log("Botão de adicionar clicado");
 
     if (!nomeMaterial.value || !qtdAtual.value || !qtdMinima.value || !qtdMaxima.value || !inputImagem.files[0]) {
         alert("Preencha todos os campos e selecione uma imagem!");
@@ -55,118 +60,57 @@ btnAdd?.addEventListener("click", function (event) {
 
     reader.onload = function () {
         abrirBanco(function (db) {
-            let transaction = db.transaction("imagens", "readwrite");
-            let store = transaction.objectStore("imagens");
+            console.log("Salvando material no banco...");
+            let transaction = db.transaction("materiais", "readwrite");
+            let store = transaction.objectStore("materiais");
 
-            let imagem = {
-                nome: file.name,
-                tipo: file.type,
-                dados: reader.result,
-                status: 'ativo' // Adicionando status ativo
+            let material = {
+                nome: nomeMaterial.value,
+                qtdAtual: qtdAtual.value,
+                qtdMinima: qtdMinima.value,
+                qtdMaxima: qtdMaxima.value,
+                imagem: {
+                    nome: file.name,
+                    tipo: file.type,
+                    dados: reader.result
+                },
+                status: "ativo"
             };
 
-            let addRequest = store.add(imagem);
-            addRequest.onsuccess = function (event) {
-                let imagemId = event.target.result;
-                criarMaterial(imagemId);
+            let addRequest = store.add(material);
+            addRequest.onsuccess = function () {
+                console.log("Material salvo com sucesso");
+                carregarMateriais(); // Atualiza a lista
+                limpaInputs(); // Limpa os inputs após adicionar
             };
 
             addRequest.onerror = function () {
-                console.error("Erro ao salvar imagem");
+                console.error("Erro ao salvar material");
             };
         });
     };
 });
 
-// Cria o item da lista com imagem e informações
-function criarMaterial(imagemId) {
-    abrirBanco(function (db) {
-        let transaction = db.transaction("imagens", "readonly");
-        let store = transaction.objectStore("imagens");
-        let getRequest = store.get(imagemId);
-
-        getRequest.onsuccess = function () {
-            let imgData = getRequest.result;
-            let blob = new Blob([imgData.dados], { type: imgData.tipo });
-            let url = URL.createObjectURL(blob);
-
-            let li = document.createElement("li");
-            li.classList.add("produto-item");
-
-            let imgElement = document.createElement("img");
-            imgElement.src = url;
-            imgElement.style.width = "100px";
-            imgElement.style.marginRight = "10px";
-
-            let info = document.createElement("div");
-            info.innerHTML = `
-                <p><strong>Nome do Material:</strong> ${nomeMaterial.value}</p>
-                <p><strong>Quantidade Atual:</strong> ${qtdAtual.value}</p>
-                <p><strong>Quantidade Mínima:</strong> ${qtdMinima.value}</p>
-                <p><strong>Quantidade Máxima:</strong> ${qtdMaxima.value}</p>
-            `;
-
-            let botaoApagar = document.createElement("button");
-            botaoApagar.setAttribute("class", "apagar");
-            botaoApagar.innerText = "Apagar";
-            botaoApagar.onclick = function () {
-                apagarMaterial(imagemId); // Marca como apagado no banco
-                li.remove();
-            };
-
-            li.appendChild(imgElement);
-            li.appendChild(info);
-            li.appendChild(botaoApagar);
-            lista.appendChild(li);
-
-            imgElement.onload = () => URL.revokeObjectURL(url);
-        };
-
-        getRequest.onerror = function () {
-            console.error("Erro ao carregar imagem");
-        };
-    });
-}
-
-// Marca um material como apagado no banco de dados
-function apagarMaterial(imagemId) {
-    abrirBanco(function (db) {
-        let transaction = db.transaction("imagens", "readwrite");
-        let store = transaction.objectStore("imagens");
-        let getRequest = store.get(imagemId);
-
-        getRequest.onsuccess = function () {
-            let imgData = getRequest.result;
-            imgData.status = "apagado"; // Marca como apagado
-
-            let updateRequest = store.put(imgData);
-            updateRequest.onerror = function () {
-                console.error("Erro ao atualizar o status do material");
-            };
-        };
-
-        getRequest.onerror = function () {
-            console.error("Erro ao recuperar material para apagar");
-        };
-    });
-}
-
 // Recupera os materiais do IndexedDB ao carregar a página
 function carregarMateriais() {
     abrirBanco(function (db) {
-        let transaction = db.transaction("imagens", "readonly");
-        let store = transaction.objectStore("imagens");
+        console.log("Carregando materiais...");
+        let transaction = db.transaction("materiais", "readonly");
+        let store = transaction.objectStore("materiais");
         let getRequest = store.getAll();
 
         getRequest.onsuccess = function () {
-            let imagens = getRequest.result;
-            imagens.forEach(imagem => {
-                // Só adiciona os materiais com status "ativo"
-                if (imagem.status === "ativo") {
+            lista.innerHTML = ""; // Limpa a lista antes de carregar
+
+            let materiais = getRequest.result;
+            console.log("Materiais encontrados:", materiais);
+
+            materiais.forEach(material => {
+                if (material.status === "ativo") {
                     let li = document.createElement("li");
                     li.classList.add("produto-item");
 
-                    let imgData = imagem;
+                    let imgData = material.imagem;
                     let blob = new Blob([imgData.dados], { type: imgData.tipo });
                     let url = URL.createObjectURL(blob);
 
@@ -177,17 +121,17 @@ function carregarMateriais() {
 
                     let info = document.createElement("div");
                     info.innerHTML = `
-                        <p><strong>Nome do Material:</strong> ${imagem.nome}</p>
-                        <p><strong>Quantidade Atual:</strong> ${qtdAtual.value}</p>
-                        <p><strong>Quantidade Mínima:</strong> ${qtdMinima.value}</p>
-                        <p><strong>Quantidade Máxima:</strong> ${qtdMaxima.value}</p>
+                        <p><strong>Nome do Material:</strong> ${material.nome}</p>
+                        <p><strong>Quantidade Atual:</strong> ${material.qtdAtual}</p>
+                        <p><strong>Quantidade Mínima:</strong> ${material.qtdMinima}</p>
+                        <p><strong>Quantidade Máxima:</strong> ${material.qtdMaxima}</p>
                     `;
 
                     let botaoApagar = document.createElement("button");
                     botaoApagar.setAttribute("class", "apagar");
                     botaoApagar.innerText = "Apagar";
                     botaoApagar.onclick = function () {
-                        apagarMaterial(imagem.id); // Marca como apagado no banco
+                        apagarMaterial(material.id);
                         li.remove();
                     };
 
@@ -195,40 +139,40 @@ function carregarMateriais() {
                     li.appendChild(info);
                     li.appendChild(botaoApagar);
                     lista.appendChild(li);
+
+                    imgElement.onload = () => URL.revokeObjectURL(url);
                 }
             });
         };
 
         getRequest.onerror = function () {
-            console.error("Erro ao carregar imagens");
+            console.error("Erro ao carregar materiais");
         };
     });
 }
 
-const uploadArea = document.getElementById('uploadArea');
+// Marca um material como apagado no banco de dados
+function apagarMaterial(materialId) {
+    abrirBanco(function (db) {
+        let transaction = db.transaction("materiais", "readwrite");
+        let store = transaction.objectStore("materiais");
+        let getRequest = store.get(materialId);
 
-uploadArea.addEventListener('click', function() {
-    inputImagem.click();
-});
+        getRequest.onsuccess = function () {
+            let material = getRequest.result;
+            material.status = "apagado"; // Marca como apagado
 
-uploadArea.addEventListener('dragover', function(event) {
-    event.preventDefault();
-    this.classList.add('dragging');
-});
+            let updateRequest = store.put(material);
+            updateRequest.onerror = function () {
+                console.error("Erro ao atualizar o status do material");
+            };
+        };
 
-uploadArea.addEventListener('dragleave', function() {
-    this.classList.remove('dragging');
-});
-
-uploadArea.addEventListener('drop', function(event) {
-    event.preventDefault();
-    this.classList.remove('dragging');
-    let file = event.dataTransfer.files[0];
-
-    if (file) {
-        console.log('Imagem carregada:', file.name);
-    }
-});
+        getRequest.onerror = function () {
+            console.error("Erro ao recuperar material para apagar");
+        };
+    });
+}
 
 // Inicialização
 document.addEventListener("DOMContentLoaded", carregarMateriais);
