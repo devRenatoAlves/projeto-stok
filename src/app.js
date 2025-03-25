@@ -5,11 +5,14 @@ const app = express();
 const registerRoutes = require("./routes/register");
 const loginRoutes = require("./routes/login");
 const estoqueRoutes = require("./routes/estoque");
+const cookieParser = require('cookie-parser');
+
 
 // Middlewares
 app.use(express.urlencoded({extended: true,}));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
+app.use(cookieParser());
 
 // Configurações do Handlebars
 app.set("views", path.join(__dirname, "./views/pages"));
