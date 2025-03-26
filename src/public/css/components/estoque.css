@@ -90,6 +90,7 @@ li img {
   object-fit: cover;
   border-radius: 8px;
   margin-right: 15px; 
+}
 
 li .info {
   flex: 1;
@@ -120,7 +121,6 @@ li button:hover {
   background-color: #1b4332;
 }
 
-/* Estilo do campo de upload */
 .upload-area {
   width: 100%;
   max-width: 320px;
@@ -164,8 +164,13 @@ li button:hover {
 img {
   width: 100%;
   max-width: 300px;
-
   display: inline-block;
   border-radius: 10px;
   margin-top: 5x;
 }
+
+#username  {
+  text-align: center;
+  margin-top: 10px;
+  color: #e4e4e4;
+} 
