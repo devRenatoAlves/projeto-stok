@@ -23,7 +23,7 @@ router.post("/insertuser", (req, res) => {
     return res.status(400).send("Usuário e senha são obrigatórios.");
   }
 
-  const sql = `INSERT INTO users (username, password) VALUES (?, ?)`;
+  const sql = `INSERT INTO USERS (username, password) VALUES (?, ?)`;
   const data = [username, password];
 
   pool.query(sql, data, (err, results) => {
