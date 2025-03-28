@@ -39,6 +39,6 @@ app.get("/login-error", (req, res) => {
 
 
 // Definindo portas
-app.listen(3306, () => {
+app.listen(3000, () => {
   console.log("Servidor rodando na porta 3306");
 });
