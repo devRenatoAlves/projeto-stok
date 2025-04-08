@@ -12,40 +12,43 @@ router.get("/", (req, res) => {
 // Rota para validar o usuário
 router.post("/verifyuser", (req, res) => {
   const { username, password } = req.body;
-  console.log("Dados recebidos:", username, password); // Debug
+  console.log("Dados recebidos:", username, password);
   console.log("[POST] /login/verifyuser - Requisição recebida!");
+
   const sql = `SELECT * FROM users WHERE username = $1 AND password = $2`;
   const data = [username, password];
 
   pool.query(sql, data, (err, results) => {
     if (err) {
-      console.log("Erro na consulta:", err);
+      console.error("Erro na consulta:", err);
       return res.redirect("/error");
     }
 
     console.log("Resultados da consulta:", results);
 
-    if (results.length === 0) {
+    // Corrigido para acessar `results.rows` corretamente
+    if (results.rowCount === 0) {
       console.log("Usuário não encontrado. Redirecionando...");
       return res.redirect("/login-error");
     }
 
     // Gera o Token JWT após validação
+    const user = results.rows[0];
     const token = jwt.sign(
-      { id: results[0].id, username: results[0].username },
-      process.env.JWT_SECRET,  // Aqui estamos utilizando o segredo do .env
+      { id: user.id, username: user.username },
+      process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
 
     // Define o Cookie JWT
-    res.cookie('token', token, { 
-      httpOnly: true, 
-      secure: false, 
-      sameSite: 'lax' 
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: false, // true em produção com HTTPS
+      sameSite: 'lax'
     });
 
     console.log("Login bem-sucedido. Redirecionando...");
-    res.redirect("/estoque"); // Redireciona após salvar o token
+    res.redirect("/estoque");
   });
 });
 

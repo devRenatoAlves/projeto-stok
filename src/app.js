@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const path = require("path");
 const exphbs = require("express-handlebars");
@@ -7,6 +8,7 @@ const loginRoutes = require("./routes/login");
 const estoqueRoutes = require("./routes/estoque");
 const cookieParser = require('cookie-parser');
 const PORT = process.env.PORT || 10000;
+
 
 
 // Middlewares
