@@ -6,6 +6,7 @@ const registerRoutes = require("./routes/register");
 const loginRoutes = require("./routes/login");
 const estoqueRoutes = require("./routes/estoque");
 const cookieParser = require('cookie-parser');
+const PORT = process.env.PORT || 10000;
 
 
 // Middlewares
@@ -39,6 +40,6 @@ app.get("/login-error", (req, res) => {
 
 
 // Definindo portas
-app.listen(10000, () => {
-  console.log("Servidor rodando na porta 10000");
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
 });
