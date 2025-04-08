@@ -13,7 +13,7 @@ router.get("/", (req, res) => {
 router.post("/verifyuser", (req, res) => {
   const { username, password } = req.body;
   console.log("Dados recebidos:", username, password); // Debug
-
+  console.log("[POST] /login/verifyuser - Requisição recebida!");
   const sql = `SELECT * FROM users WHERE username = $1 AND password = $2`;
   const data = [username, password];
 
