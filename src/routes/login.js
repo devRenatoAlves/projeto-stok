@@ -14,7 +14,7 @@ router.post("/verifyuser", (req, res) => {
   const { username, password } = req.body;
   console.log("Dados recebidos:", username, password); // Debug
 
-  const sql = `SELECT * FROM users WHERE username = ? AND password = ?`;
+  const sql = `SELECT * FROM users WHERE username = $1 AND password = $2`;
   const data = [username, password];
 
   pool.query(sql, data, (err, results) => {

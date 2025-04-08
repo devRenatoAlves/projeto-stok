@@ -1,5 +1,5 @@
 //const mysql = require ('mysql');
-//require('dotenv').config();
+require('dotenv').config();
 
 //const pool = mysql.createPool({
   //host: process.env.DB_HOST,
@@ -10,3 +10,11 @@
 //});
 
 //module.exports = pool;
+const { Pool } = require('pg');
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false } // Necessário no Render
+});
+
+module.exports = pool;
