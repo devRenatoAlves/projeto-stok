@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap');
 
-body {
-  background-color: #41ca83;
-}
+  body {
+    background-color: #41ca83;
+    height: 100vh; /* Garante que a altura da página seja 100% da tela */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }

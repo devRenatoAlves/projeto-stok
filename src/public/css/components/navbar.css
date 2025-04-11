@@ -5,6 +5,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative; /* necessário para posicionamento absoluto do texto */
   color: #1b4332;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border: 3px solid #2d6a4f;
@@ -16,6 +17,17 @@
   height: 40px;
   width: auto;
   filter: brightness(0);
+}
+
+/* Centraliza e dá contraste ao texto de boas-vindas */
+#username {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #1b4332;
+  font-weight: bold;
+  font-size: 18px;
+  white-space: nowrap;
 }
 
 .navbar a {
@@ -73,5 +85,11 @@
 
   .menu-toggle {
     display: block;
+  }
+
+  /* Ajuste para centralizar o texto em telas pequenas também */
+  #username {
+    font-size: 16px;
+    top: 12px;
   }
 }
