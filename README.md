@@ -1,7 +1,6 @@
 # STOKS 📦
 
 <img src="./src/public/imgs/print-stoks-git-hub.png" alt="Page Stoks">
-https://stoks.onrender.com
 
 ## Tecnologias usadas:
 - Handlebars
